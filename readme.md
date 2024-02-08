@@ -1,4 +1,4 @@
-# TP361  DOCKER 
+# Pratices  DOCKER 
 
 ```
 Build the image : docker compose build
