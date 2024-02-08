@@ -1,4 +1,4 @@
-# Pratices  DOCKER 
+# Practices  DOCKER 
 
 ```
 Build the image : docker compose build
