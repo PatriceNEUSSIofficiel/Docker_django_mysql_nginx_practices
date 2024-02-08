@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  gestion:
+    build: 
+      context: ./gestion
+    command: bash -c "python3 ./gestion/manage.py makemigrations && python3 ./gestion/manage.py migrate && python3 ./gestion/manage.py runserver 0.0.0.0:8001"
+    volumes:
+      - .:/app  
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db  
+    networks:
+      - appnetwork
+      
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: gestion_bd
+    volumes:
+      - dbvolume:/var/lib/mysql
+    networks:
+      - appnetwork
+    ports:
+      - 5412-5999:3306
+
+  nginx:
+    build: ./conf
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+    links:
+      - gestion
+    depends_on:
+      - gestion
+      - db
+    networks:
+      - appnetwork
+
+networks:
+  appnetwork:
+    driver: bridge
+
+volumes:
+  dbvolume:
